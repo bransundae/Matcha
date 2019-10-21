@@ -1,6 +1,6 @@
 module.exports = {
-    instagramAppID: '2773841042634376',
-    instagramClientSecret: 'b13b868d23bb701d84a84ba3015c54b3',
-    instagramRedirectURI: 'https://localhost:5000/auth/instagram',
-    instagramWindow: `https://api.instagram.com/oauth/authorize?app_id=2773841042634376&redirect_uri=https%3A%2F%2Flocalhost%3A5000%2Fauth%2Finstagram&scope=user_profile,user_media&response_type=code&state=1`
+    mongoURI: `mongodb+srv://matcha:${encodeURI('M@7ch@')}@matcha-t0bsj.mongodb.net/test?retryWrites=true&w=majority`,
+    googleClientID: '834503721968-tlctks702gd1jpe79a54nikpca8rpf22.apps.googleusercontent.com',
+    googleClientSecret: 'kXAM2MDGtbX-0boag1lYsepo',
+    googleCallbackURI: '/auth/google/callback'
 }
