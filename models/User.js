@@ -20,3 +20,6 @@ const UserSchema = new Schema({
         type: String
     }
 });
+
+//Create collection and Add Schema
+mongoose.model('user', UserSchema);

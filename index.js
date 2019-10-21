@@ -1,9 +1,30 @@
 //Dependencies
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const passport = require('passport');
 
 const app = express();
+
+//Globals
+app.use((req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
+
+//Load Models
+require('./models/User');
+
+//Load Middleware
+app.use(cookieParser());
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Load Configs
 const keys = require('./config/keys');
