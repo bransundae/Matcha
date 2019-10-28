@@ -13,10 +13,7 @@ module.exports = function(passport){
       callbackURL: keys.googleCallbackURI,
       proxy: true
     }, (accessToken, refreshToken, profile, done) => {
-
-      done();
-
-      /*User.findOne({
+      User.findOne({
         googleID: profile.id
       }).then(user => {
         if (user){
@@ -34,7 +31,7 @@ module.exports = function(passport){
           .save()
           .then(user => done(null, user));
         }
-      })*/
+      })
     })
   )
 
