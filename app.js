@@ -38,6 +38,7 @@ require('./config/passport')(passport);
 
 //Load Routes
 const auth = require('./routes/auth');
+const user = require('./routes/user');
 const index = require('./routes/index');
 
 //Mongoose Connect
@@ -52,6 +53,7 @@ mongoose.connect(keys.mongoURI, {
 
 //Use Routes
 app.use('/auth', auth);
+app.use('/user', user);
 app.use('/', index);
 
 //Create and Initialise the Server

@@ -24,14 +24,13 @@
     <script>
         $(document).ready(() => {
             $('.button-collapse').sideNav();
+            $('.tabs').tabs();
         });
     </script>
 
     {{>_header}}
     <main>
-        <div class="container">
-            {{{body}}}
-        </div>
+        {{{body}}}
     </main>
 </body>
 </html>
