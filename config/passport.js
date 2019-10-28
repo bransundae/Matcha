@@ -34,7 +34,7 @@ module.exports = function(passport){
           .save()
           .then(user => done(null, user));
         }
-      /*})
+      })*/
     })
   )
 
