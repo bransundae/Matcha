@@ -1,3 +1,4 @@
+<div class="row">
 <nav class="grey darken-3">
     <div class="container">
         <div class="nav-wrapper">
@@ -16,7 +17,10 @@
             <ul class="side-nav" id="main-menu">
                 {{#unless user}}
                 <li>
-                    <a class="btn red darken-1" href="/auth/google"><i class="fab fa-google left"></i> Login With Google</a>
+                    <a class="btn red darken-1" href="/auth/google"><i class="fab fa-google left"></i> Google Login</a>
+                </li>
+                <li>
+                    <a class="btn pink darken-1" href="/auth/instagram"><i class="fab fa-instagram left"></i> Instagram Login</a>
                 </li>
                 {{else}}
                 <li>
@@ -33,4 +37,5 @@
         </div>
     </div>
 </nav>
+</div>
 
