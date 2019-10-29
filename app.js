@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars');
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 
@@ -17,6 +18,8 @@ app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
     secret: 'secret',
@@ -50,6 +53,9 @@ mongoose.connect(keys.mongoURI, {
     console.log('MongoDB Connected')
 })
 .catch(err => console.log(err));
+
+//Load Resource Directory
+app.use(express.static(__dirname + '/res'));
 
 //Use Routes
 app.use('/auth', auth);
