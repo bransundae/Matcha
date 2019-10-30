@@ -48,7 +48,7 @@ router.post('/register', (req, res) => {
                 newUser.save()
                 .then(user => {
                     req.flash('success_msg', 'You are now registered');
-                    res.redirect('/user/login');
+                    res.redirect('/auth/login');
                 })
                 .catch(err => {
                     console.log(err);
@@ -58,6 +58,25 @@ router.post('/register', (req, res) => {
         });
     }
 
+});
+
+router.get('/forms/info/update', (req, res) => {
+    res.render('user/forms/info/update');
+});
+
+router.post('/forms/info/update', (req, res) => {
+   User.findOne({
+       email: res.locals.user.email
+   }).then(user => {
+       user.firstName = req.body.firstName;
+       user.lastName = req.body.lastName;
+       user.details = {
+           orientaion: req.bofy.orientaion,
+           height: req.body.height,
+           bodyType: req.body.bodyType,
+           diet: req.body.diet
+       }
+   })
 });
 
 module.exports = router;

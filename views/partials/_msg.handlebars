@@ -1,18 +1,24 @@
+{{#if error}}
+    <div class="row">
+        <div class="card-panel col s6 offset-s3 center-align red-text">{{error}}</div>
+    </div>
+{{/if}}
+
 {{#if success_msg}}
     <div class="row">
-        <div class="card-panel col s6 offset-s3 center-align">{{{success_msg}}}</div>
+        <div class="card-panel col s6 offset-s3 center-align red-text">{{{success_msg}}}</div>
     </div>
 {{/if}}
 
 {{#if error_msg}}
     <div class="row">
-        <div class="card-panel col s6 offset-s3 center-align">{{{error_msg}}}</div>
+        <div class="card-panel col s6 offset-s3 center-align red-text">{{{error_msg}}}</div>
     </div>
 {{/if}}
 
 {{#each errors}}
     <div class="row">
-        <div class="card-panel col s6 offset-s3 center-align">{{{text}}}</div>
+        <div class="card-panel col s6 offset-s3 center-align red-text">{{{text}}}</div>
     </div>
 {{else}}
 

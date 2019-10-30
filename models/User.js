@@ -24,6 +24,23 @@ const UserSchema = new Schema({
     lastName: {
         type: String
     },
+    details: {
+        orientation: {
+            type: String
+        },
+        ethnicity: {
+            type: String
+        },
+        height: {
+            type: String
+        },
+        bodyType: {
+            type: String
+        },
+        diet: {
+            type: String
+        }
+    },
     image: {
         type: String
     },
