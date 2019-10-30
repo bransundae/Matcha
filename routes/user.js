@@ -71,11 +71,17 @@ router.post('/forms/info/update', (req, res) => {
        user.firstName = req.body.firstName;
        user.lastName = req.body.lastName;
        user.details = {
-           orientaion: req.bofy.orientaion,
+           orientation: req.body.orientation,
            height: req.body.height,
            bodyType: req.body.bodyType,
            diet: req.body.diet
        }
+       user.save()
+       .then(user => {
+           req.flash('success_msg', 'Your info has been updated');
+           res.redirect('/user/profile');
+       })
+       console.log(user);
    })
 });
 

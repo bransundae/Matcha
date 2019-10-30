@@ -25,6 +25,9 @@ const UserSchema = new Schema({
         type: String
     },
     details: {
+        birthday: {
+            type: Date
+        },
         orientation: {
             type: String
         },
@@ -32,7 +35,7 @@ const UserSchema = new Schema({
             type: String
         },
         height: {
-            type: String
+            type: Number
         },
         bodyType: {
             type: String
@@ -43,6 +46,10 @@ const UserSchema = new Schema({
     },
     image: {
         type: String
+    },
+    fame: {
+        type: Number,
+        default: 1
     },
     date: {
         type: Date,
