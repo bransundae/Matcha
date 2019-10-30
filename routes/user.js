@@ -65,7 +65,30 @@ router.get('/forms/info/update', (req, res) => {
 });
 
 router.post('/forms/info/update', (req, res) => {
-   User.findOne({
+
+    errors = [];
+
+    if(Date.now() < Date.parse(req.body.birthday)){
+        errors.push({text: 'You must have been born before now'})
+    } else if (Date.now() - Date.parse(req.body.birthday) < (568025136000 / 1)){
+        errors.push({text: 'You must be older than 18'})
+    }
+
+    if (errors.length > 0){
+        res.render('user/forms/info/update', {
+            errors: errors,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            birthday: req.body.lastName,
+            orientation: req.body.orientation,
+            ethnicity: req.body.ethnicity,
+            height: req.body.height,
+            diet: req.body.diet
+        });
+    }
+
+
+   /*User.findOne({
        email: res.locals.user.email
    }).then(user => {
        user.firstName = req.body.firstName;
@@ -75,14 +98,15 @@ router.post('/forms/info/update', (req, res) => {
            height: req.body.height,
            bodyType: req.body.bodyType,
            diet: req.body.diet
-       }
+       };
+       user.birthday = req.body.birthday;
        user.save()
        .then(user => {
            req.flash('success_msg', 'Your info has been updated');
            res.redirect('/user/profile');
        })
        console.log(user);
-   })
+   })*/
 });
 
 module.exports = router;
