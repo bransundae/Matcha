@@ -79,14 +79,14 @@ router.post('/forms/info/update', (req, res) => {
             errors: errors,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            birthday: req.body.lastName,
+            birthday: req.body.birthday,
             orientation: req.body.orientation,
             ethnicity: req.body.ethnicity,
             height: req.body.height,
+            bodyType: req.body.bodyType,
             diet: req.body.diet
         });
     }
-
 
    /*User.findOne({
        email: res.locals.user.email

@@ -37,8 +37,11 @@
                 today: 'Today',
                 clear: 'Clear',
                 close: 'Ok',
-                closeOnSelect: false // Close upon selecting a date,
+                closeOnSelect: true // Close upon selecting a date,
+            }).on('mousedown', (event)=> {
+                event.preventDefault();
             });
+            $('select').formSelect();
             $('.button-collapse').sideNav();
             $('.tabs').tabs();
         });
