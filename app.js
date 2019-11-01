@@ -14,8 +14,16 @@ const app = express();
 //Load Models
 require('./models/User');
 
+//Load Configs
+const {
+    strcmp
+} = require('./config/hbs');
+const keys = require('./config/keys');
+require('./config/passport')(passport);
+
 //Load Middleware
 app.engine('handlebars', exphbs({
+    helpers: {strcmp : strcmp},
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
@@ -35,14 +43,10 @@ app.use(passport.session());
 app.use((req, res, next) => {
     res.locals.user = req.user || null;
     res.locals.success_msg = req.flash('success_msg');
-    res.locals.eeror_msg = req.flash('error_msg');
-    res.locals.error = req.flash('error');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.prompt = req.flash('prompt');
     next();
-});
-
-//Load Configs
-const keys = require('./config/keys');
-require('./config/passport')(passport); 
+}); 
 
 //Load Routes
 const auth = require('./routes/auth');

@@ -1,0 +1,39 @@
+<div class="row">
+                <div class="input-field col s12">
+                    <select name="orientation" id="orientation" class="validate"> 
+                        <option value="" disabled {{#unless orientation}} selected {{/unless}}></option>
+                        <option value="men" {{#unless (strcmp orientation "men")}} selected {{/unless}}>Men</option>
+                        <option value="woman" {{#unless (strcmp orientation "woman")}} selected {{/unless}}>Women</option>
+                        <option value="men & woman" {{#unless (strcmp orientation "men & woman")}} selected {{/unless}}>Men & Women</option>
+                    </select>
+                    <label for="orientation">Orientation</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="ethnicity" id="ethnicity" class="validate"> 
+                        <option value="" disabled {{#unless ethnicity}} selected {{/unless}}></option>
+                        <option value="african" {{#unless (strcmp ethnicity "african")}} selected {{/unless}}>African</option>
+                        <option value="caucasion" {{#unless (strcmp ethnicity "caucasian")}} selected {{/unless}}>Caucasian</option>
+                        <option value="asian" {{#unless (strcmp ethnicity "asian")}} selected {{/unless}}>Asian</option>
+                    </select>
+                    <label for="ethnicity">Ethnicity</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="text" class="validate" name="height" id="height" value="{{height}}" required>
+                    <label for="height">Height</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="bodyType" id="bodyType" class="validate"> 
+                        <option value="" disabled {{#unless bodyType}} selected {{/unless}}></option>
+                        <option value="slim" {{#unless (strcmp bodyType "slim")}} selected {{/unless}}>slim</option>
+                        <option value="balanced" {{#unless (strcmp bodyType "balanced")}}>balanced</option>
+                        <option value="cuddly" {{#unless (strcmp bodyType "cuddly")}}>cuddly</option>
+                    </select>
+                    <label for="bodyType">Body Type</label>
+                </div>
+            </div>

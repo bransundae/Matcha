@@ -25,6 +25,9 @@ const UserSchema = new Schema({
         type: String
     },
     details: {
+        location: {
+            type: String
+        },
         birthday: {
             type: Date
         },

@@ -3,15 +3,15 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('auth/login');
+    res.render('user/forms/login');
 });
 
 router.get('/login', (req, res) => {
-    res.render('auth/login');
+    res.render('user/forms//login');
 });
 
 router.get('/register', (req, res) => {
-    res.render('auth/register');
+    res.render('user/forms/register');
 });
 
 router.get('/google', passport.authenticate('google', {

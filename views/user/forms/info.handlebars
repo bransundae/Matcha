@@ -1,0 +1,155 @@
+<div class="row">
+    <div class="card-panel col s6 offset-s3 center-align">
+        <h5>Update Info</h5>
+        <form action="/user/info/update" method="POST">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="text" class="validate" name="firstName" id="firstName" value="{{firstName}}" required>
+                    <label for="firstName">First Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" class="validate" name="lastName" id="lastName" value="{{lastName}}" required>
+                    <label for="lastName">Last Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="text" class="datepicker" name="birthday" id="birthday" value="{{birthday}}" required>
+                    <label for="birthday">Birthday</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="orientation" id="orientation" class="validate"> 
+                        <option value="" disabled {{#unless orientation}} selected {{/unless}}></option>
+                        <option value="men"
+                        {{#if orientation}}
+                            {{#unless (strcmp orientation "men")}} 
+                                selected 
+                            {{/unless}} 
+                        {{/if}}>Men</option>
+                        <option value="woman" 
+                        {{#if orientation}}
+                            {{#unless (strcmp orientation "woman")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Woman</option>
+                        <option value="men & woman" 
+                        {{#if orientation}} 
+                            {{#unless (strcmp orientation "men & woman")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Men & Woman</option>
+                    </select>
+                    <label for="orientation">Orientation</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="ethnicity" id="ethnicity" class="validate"> 
+                        <option value="" disabled {{#unless ethnicity}} selected {{/unless}}></option>
+                        <option value="african" 
+                        {{#if ethnicity}}
+                            {{#unless (strcmp ethnicity "african")}} 
+                                selected 
+                            {{/unless}} 
+                        {{/if}}>African</option>
+                        <option value="caucasian" 
+                        {{#if ethnicity}}
+                            {{#unless (strcmp ethnicity "caucasian")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Caucasian</option>
+                        <option value="cuddly" 
+                        {{#if ethnicity}} 
+                            {{#unless (strcmp ethnicity "asian")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Asian</option>
+                    </select>
+                    <label for="ethnicity">Ethnicity</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="number" step="0.0001" class="validate" name="height" id="height" value="{{height}}" required>
+                    <label for="height">Height</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="bodyType" id="bodyType" class="validate"> 
+                        <option value="" disabled {{#unless bodyType}} selected {{/unless}}></option>
+                        <option value="slim" 
+                        {{#if bodyType}}
+                            {{#unless (strcmp bodyType "slim")}} 
+                                selected 
+                            {{/unless}} 
+                        {{/if}}>Slim</option>
+                        <option value="balanced" 
+                        {{#if bodyType}}
+                            {{#unless (strcmp bodyType "balanced")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Balanced</option>
+                        <option value="cuddly" 
+                        {{#if bodyType}} 
+                            {{#unless (strcmp bodyType "cuddly")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Cuddly</option>
+                    </select>
+                    <label for="bodyType">Body Type</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="diet" id="diet" class="validate"> 
+                        <option value="" disabled {{#unless diet}} selected {{/unless}}></option>
+                        <option value="vegetarian" 
+                        {{#if diet}}
+                            {{#unless (strcmp diet "vegetarian")}} 
+                                selected 
+                            {{/unless}} 
+                        {{/if}}>Vegetarian</option>
+                        <option value="vegan" 
+                        {{#if diet}}
+                            {{#unless (strcmp diet "vegan")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Vegan</option>
+                        <option value="carnivore" 
+                        {{#if diet}} 
+                            {{#unless (strcmp diet "carnivore")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Carnivore</option>
+                        <option value="raw"
+                            {{#if diet}}
+                                {{#unless (strcmp diet "raw")}}
+                                    selected 
+                                {{/unless}}
+                            {{/if}}>Raw</option>
+                        <option value="pescitarian"
+                        {{#if diet}}
+                            {{#unless (strcmp diet "pescitarian")}}
+                                selected
+                            {{/unless}}
+                        {{/if}}>Pescitarian</option>
+                        <option value="omnivore"
+                        {{#if diet}}
+                            {{#unless (strcmp diet "omnivore")}}
+                                selected
+                            {{/unless}}
+                        {{/if}}>Omnivore</option>
+                    </select>
+                    <label for="diet">Diet</label>
+                </div>
+            </div>
+            <div class="section"></div>
+            <button class="btn" type="submit">Update</button>
+            <div class="section"></div>
+        </form>
+    </div>
+</div>

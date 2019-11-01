@@ -41,7 +41,10 @@
             }).on('mousedown', (event)=> {
                 event.preventDefault();
             });
-            $('select').formSelect();
+            $('select').material_select({"stopPropagation":true})
+            .on('mousedown', (event) => {
+                event.preventDefault();
+            });
             $('.button-collapse').sideNav();
             $('.tabs').tabs();
         });

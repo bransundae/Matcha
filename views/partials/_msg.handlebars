@@ -1,12 +1,12 @@
-{{#if error}}
+{{#if prompt}}
     <div class="row">
-        <div class="card-panel col s6 offset-s3 center-align red-text">{{error}}</div>
+        <div class="card-panel col s6 offset-s3 center-align blue-text">{{prompt}}</div>
     </div>
 {{/if}}
 
 {{#if success_msg}}
     <div class="row">
-        <div class="card-panel col s6 offset-s3 center-align red-text">{{{success_msg}}}</div>
+        <div class="card-panel col s6 offset-s3 center-align green-text">{{{success_msg}}}</div>
     </div>
 {{/if}}
 
@@ -20,6 +20,4 @@
     <div class="row">
         <div class="card-panel col s6 offset-s3 center-align red-text">{{{text}}}</div>
     </div>
-{{else}}
-
 {{/each}}
