@@ -24,7 +24,33 @@ router.get('/profile', (req, res) => {
                 }
             else{
                 var birthdayString = user.details.birthday.toDateString().split(' ');
+                var media = req.query.media;
+                if (typeof media !== undefined && media){
+                    media = JSON.parse(media);
+                    console.log(media);
+
+                    var dup = false;
+                    var currentImages = user.images;
+
+                    for (var i = 0; i < media.length; i++){
+                        for (var j = 0; j < currentImages.length; j++){
+                            if (currentImages[j].permalink ==  media[i].permalink){
+                                dup = true;
+                                j = 0;
+                                i++;
+                            }
+                        }
+                        if (dup == false){
+                            currentImages.push(media[i]);
+                        } else {
+                            dup = false;
+                        }
+                    }
+
+                    console.log(currentImages);
+                }
                 res.render('user/profile', {
+                    media: media,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,

@@ -47,6 +47,7 @@ const UserSchema = new Schema({
             type: String
         }
     },
+    images: [{permalink : {type : String}, caption : {type : String}}],
     image: {
         type: String
     },
