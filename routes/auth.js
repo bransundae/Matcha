@@ -86,7 +86,7 @@ router.get('/instagram/redirect', (req, res) => {
     
                 response.on('end', () => {
                     const media = encodeURIComponent(JSON.stringify(JSON.parse(body1).data));
-                    res.redirect(`/?media=${media}`);
+                    res.redirect(`/user/profile/?media=${media}`);
                 })
             })
     
@@ -103,15 +103,6 @@ router.get('/instagram/redirect', (req, res) => {
     request.write(data);
     request.end();
 })
-
-
-router.get('/verify', (req, res) => {
-    if (req.user){
-        console.log(req.user);
-    } else {
-        console.log('auth failed');
-    }
-});
 
 router.get('/logout', (req, res) => {
     req.logout();

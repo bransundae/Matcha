@@ -15,7 +15,6 @@
     </div>
 
     <div class="col s9">
-
         <div class="row">
             <div class="col s2">
                 <img src={{{profileImage}}} alt="" class="circle responsive-img">
@@ -88,71 +87,36 @@
         <div id="photos" class="col s12">
             <div class="section"></div>
 
-            <div class="row">
-                <div class="col s4">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/images/bjohnso.png">
-                        </div>
-                        <div class="card-content">
-                            <p>Me Looking Dapper :)</p>
-                        </div>
-                        <div class="card-action">
+                {{#if media}}
+                    {{#each media}}
+                        {{#if (indexStep @index 3)}}
                             <div class="row">
-                                <div class="col s6">
-                                    <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                        {{/if}}
+                        <div class="col s4">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="{{permalink}}media/?size=l">
                                 </div>
-                                <div class="col s6">
-                                    <a href="#"><i class="fas fa-trash-alt"></i> Delete</a>
+                                <div class="card-content">
+                                    <p>{{caption}}</p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="#"><i class="fas fa-trash-alt"></i> Delete</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col s4">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/images/bjohnso.png">
-                        </div>
-                        <div class="card-content">
-                            <p>Me Looking Dapper :)</p>
-                        </div>
-                        <div class="card-action">
-                            <div class="row">
-                                <div class="col s6">
-                                    <a href="#"><i class="fas fa-edit"></i> Edit</a>
-                                </div>
-                                <div class="col s6">
-                                    <a href="#"><i class="fas fa-trash-alt"></i> Delete</a>
-                                </div>
+                        {{#if (indexStep @index 3)}}
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s4">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/images/bjohnso.png">
-                        </div>
-                        <div class="card-content">
-                            <p>Me Looking Dapper :)</p>
-                        </div>
-                        <div class="card-action">
-                            <div class="row">
-                                <div class="col s6">
-                                    <a href="#"><i class="fas fa-edit"></i> Edit</a>
-                                </div>
-                                <div class="col s6">
-                                    <a href="#"><i class="fas fa-trash-alt"></i> Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+                        {{/if}}
+                    {{/each}}
+                {{/if}}
             
             <div class="row">
                 <a style="width:20vw" class="btn blue darken-1" href="#!"><i class="fas fa-cloud-upload-alt left"></i> Upload Photos</a>

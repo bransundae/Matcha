@@ -20,14 +20,18 @@ require('./models/User');
 
 //Load Configs
 const {
-    strcmp
+    strcmp,
+    indexStep
 } = require('./config/hbs');
 const keys = require('./config/keys');
 require('./config/passport')(passport);
 
 //Load Middleware
 app.engine('handlebars', exphbs({
-    helpers: {strcmp : strcmp},
+    helpers: {
+        strcmp : strcmp,
+        indexStep: indexStep
+    },
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');

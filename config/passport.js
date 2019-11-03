@@ -21,7 +21,9 @@ module.exports =
           googleID: profile.id
         }).then(user => {
           if (user){
-            done(null, user);
+            user.lastOnline = Date.now();
+            user.save()
+            .then(user => done(null, user));
           } else {
             //Create New User
             const newUser = {
@@ -29,7 +31,8 @@ module.exports =
               firstName: profile.name.givenName,
               lastName: profile.name.familyName,
               email: profile.emails[0].value,
-              image: profile.photos[0].value
+              image: profile.photos[0].value,
+              lastOnline: Date.now()
             }
             new User(newUser)
             .save()

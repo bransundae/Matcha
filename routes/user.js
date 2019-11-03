@@ -34,23 +34,28 @@ router.get('/profile', (req, res) => {
 
                     for (var i = 0; i < media.length; i++){
                         for (var j = 0; j < currentImages.length; j++){
-                            if (currentImages[j].permalink ==  media[i].permalink){
+                            if (currentImages[j].permalink ==  media[i].permalink || media[i].media_type != 'IMAGE'){
                                 dup = true;
                                 j = 0;
                                 i++;
                             }
                         }
                         if (dup == false){
-                            currentImages.push(media[i]);
-                        } else {
+                            var newMedia= {
+                                permalink: media[i].permalink,
+                                caption: media[i].caption
+                            }
+                            currentImages.push(newMedia);
+                        } else {0
                             dup = false;
                         }
                     }
-
-                    console.log(currentImages);
+                    user.images = currentImages;
+                    user.save();
                 }
+                
                 res.render('user/profile', {
-                    media: media,
+                    media: user.images,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
@@ -91,26 +96,37 @@ router.post('/register', (req, res) => {
             password: req.body.password
         });
     } else {
-        const newUser = new User({
-            email: req.body.email,
-            password: req.body.password
-        });
 
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) throw err;
-                newUser.password = hash;
-                newUser.save()
-                .then(user => {
-                    req.flash('success_msg', 'You are now registered');
-                    res.redirect('/auth/login');
-                })
-                .catch(err => {
-                    console.log(err);
-                    return;
-                })
-            });
-        });
+        User.findOne({
+            email: req.body.email
+        }).then(user => {
+            if (user){
+                req.flash('error_msg', 'There is already an account registered for that email address');
+                res.redirect('/auth/register');
+            }
+            else {
+                const newUser = new User({
+                    email: req.body.email,
+                    password: req.body.password
+                });
+        
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        newUser.password = hash;
+                        newUser.save()
+                        .then(user => {
+                            req.flash('success_msg', 'You are now registered');
+                            res.redirect('/auth/login');
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            return;
+                        })
+                    });
+                });
+            }
+        })
     }
 });
 
@@ -124,11 +140,14 @@ router.get('/info/update', (req, res) => {
             email: res.locals.user.email
         })
         .then(user => {
-            var birthdayString = user.details.birthday.toDateString().split(' ');
+            if (user.details.birthday){
+                var str = user.details.birthday.toDateString().split(' ');
+                var birthdayString = `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`;
+            }
             res.render('user/forms/info', {
                 firstName: user.firstName,
                 lastName: user.lastName,
-                birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
+                birthday: birthdayString,
                 orientation: user.details.orientation,
                 ethnicity: user.details.ethnicity,
                 height: user.details.height,
