@@ -20,26 +20,58 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select name="orientation" id="orientation" class="validate"> 
-                        <option value="" disabled {{#unless orientation}} selected {{/unless}}></option>
-                        <option value="men"
-                        {{#if orientation}}
-                            {{#unless (strcmp orientation "men")}} 
+                    <select name="gender" id="gender" class="validate"> 
+                        <option value="" disabled {{#unless gender}} selected {{/unless}}></option>
+                        <option value="male"
+                        {{#if gender}}
+                            {{#unless (strcmp gender "male")}} 
                                 selected 
                             {{/unless}} 
-                        {{/if}}>Men</option>
-                        <option value="woman" 
+                        {{/if}}>Male</option>
+                        <option value="female" 
+                        {{#if gender}}
+                            {{#unless (strcmp gender "female")}}
+                                selected 
+                            {{/unless}}
+                        {{/if}}>Female</option>
+                        <option value="non-binary" 
+                        {{#if gender}}
+                            {{#unless (strcmp gender "non-binary")}}
+                                selected
+                            {{/unless}}
+                        {{/if}}>Non-Binary</option>
+                    </select>
+                    <label for="gender">Gender</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name="orientation" id="orientation" class="validate" multiple> 
+                        <option value="" disabled {{#unless orientation}} selected {{/unless}}></option>
+                        <option value="male"
                         {{#if orientation}}
-                            {{#unless (strcmp orientation "woman")}}
-                                selected 
-                            {{/unless}}
-                        {{/if}}>Woman</option>
-                        <option value="men & woman" 
+                            {{#each orientation}}
+                                {{#unless (strcmp this "male")}} 
+                                    selected 
+                                {{/unless}}
+                            {{/each}} 
+                        {{/if}}>Male</option>
+                        <option value="female" 
+                        {{#if orientation}}
+                            {{#each orientation}}
+                                {{#unless (strcmp this "female")}}
+                                    selected 
+                                {{/unless}}
+                            {{/each}}
+                        {{/if}}>Female</option>
+                        <option value="non-binary"
                         {{#if orientation}} 
-                            {{#unless (strcmp orientation "men & woman")}}
-                                selected 
-                            {{/unless}}
-                        {{/if}}>Men & Woman</option>
+                            {{#each orientation}}
+                                {{#unless (strcmp this "non-binary")}}
+                                    selected 
+                                {{/unless}}
+                            {{/each}}
+                        {{/if}}>Non-Binary</option>
                     </select>
                     <label for="orientation">Orientation</label>
                 </div>

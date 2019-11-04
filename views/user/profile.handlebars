@@ -21,8 +21,8 @@
             </div>
             <div class="col s6">
                 <h5>{{firstName}} {{lastName}}</h5>
-                <p>25 | <i class="fas fa-mars"></i> | Western Cape, South Africa</p>
-                <a class="btn pink darken-1" href="#!">Update Info</a>
+                <p>{{years birthday}} | <i class="fas fa-mars"></i> | Western Cape, South Africa</p>
+                <a class="btn pink darken-1" href="/user/info/update">Update Info</a>
             </div>
 
             <div class="col s4 pink-text flow-text">
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="col s8">
-                        <p>5 <i class="fas fa-star"></i></p>
+                        <p>{{fame}} <i class="fas fa-star"></i></p>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,8 @@
                     <div class="row">
 
                         <div class="col s3">
-                            <p>Last Online</p>
+                            <p>Birthday</p>
+                            <p>Gender</p>
                             <p>Orientation</p>
                             <p>Ethnicity</p>
                             <p>Height</p>
@@ -74,7 +75,12 @@
 
                         <div class="col s9">
                             <p>{{birthday}}</p>
-                            <p>{{orientation}}</p>
+                            <p>{{gender}}</p>
+                            <p>
+                                {{#each orientation}}
+                                    {{this}},
+                                {{/each}}
+                            </p>
                             <p>{{ethnicity}}</p>
                             <p>{{height}}m</p>
                             <p>{{bodyType}}</p>

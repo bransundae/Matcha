@@ -21,7 +21,8 @@ require('./models/User');
 //Load Configs
 const {
     strcmp,
-    indexStep
+    indexStep,
+    years
 } = require('./config/hbs');
 const keys = require('./config/keys');
 require('./config/passport')(passport);
@@ -30,7 +31,8 @@ require('./config/passport')(passport);
 app.engine('handlebars', exphbs({
     helpers: {
         strcmp : strcmp,
-        indexStep: indexStep
+        indexStep: indexStep,
+        years: years
     },
     defaultLayout: 'main'
 }));
@@ -83,7 +85,7 @@ app.use('/', index);
 
 const port = process.env.PORT || 5000;
 
-const credentials = {
+/*const credentials = {
     key: fs.readFileSync('./config/key.pem', 'utf8'),
     cert: fs.readFileSync('./config/server.crt', 'utf8')
   };
@@ -92,6 +94,10 @@ const httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(port, () => {
     console.log(`Server started on port ${port}`);
-});
+});*/
+
+app.listen(port, ()=> {
+    console.log(`Server started on port ${port}`);
+})
 
 module.exports = httpsServer;

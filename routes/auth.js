@@ -56,7 +56,6 @@ router.get('/instagram/redirect', (req, res) => {
         })
         
         response.on('end', () => {
-            console.log(body);
             body = body.replace(/[",:{}]/g, '');
             const stringBody = body.split(' ');
             const accessToken = stringBody[1];

@@ -2,7 +2,10 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const https = require('https');
 const router = express.Router();
+
+const keys = require('../config/keys');
 
 require('../models/User');
 const User = mongoose.model('user')
@@ -17,8 +20,9 @@ router.get('/profile', (req, res) => {
             email: res.locals.user.email
         })
         .then(user => {
-            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.orientation || !user.details.ethnicity 
-                || !user.details.height || !user.details.bodyType || !user.details.diet){
+            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.gender 
+                || !user.details.orientation || !user.details.ethnicity || !user.details.height 
+                || !user.details.bodyType || !user.details.diet){
                     req.flash('prompt', 'We\'re missing a few details about you');
                     res.redirect('/user/info/update');
                 }
@@ -53,12 +57,43 @@ router.get('/profile', (req, res) => {
                     user.images = currentImages;
                     user.save();
                 }
-                
+
+                const data = `?key=${keys.googlePlacesAPIKEY}`;
+
+                const options = {
+                    hostname: 'www.googleapis.com',
+                    path: `/geolocation/v1/geolocate${data}`,
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+
+                const request = https.request(options, (response) => {
+                    var body = "";
+
+                    response.on('data', (chunk) => {
+                        body += chunk;
+                    })
+
+                    response.on('end', () => {
+                        console.log(body);
+                    })
+                })
+
+                request.on('error', (e) => {
+                    console.error(e)
+                })
+                request.write("{\"considerIp\": \"true\"}");
+                request.end();
+
                 res.render('user/profile', {
+                    fame: user.fame,
                     media: user.images,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
+                    gender: user.details.gender,
                     orientation: user.details.orientation,
                     ethnicity: user.details.ethnicity,
                     height: user.details.height,
@@ -142,12 +177,14 @@ router.get('/info/update', (req, res) => {
         .then(user => {
             if (user.details.birthday){
                 var str = user.details.birthday.toDateString().split(' ');
-                var birthdayString = `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`;
+                console.log(str);
+                var birthdayString = `${str[2]} ${str[1]},${str[3]}`;
             }
             res.render('user/forms/info', {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 birthday: birthdayString,
+                gender: user.details.gender,
                 orientation: user.details.orientation,
                 ethnicity: user.details.ethnicity,
                 height: user.details.height,
@@ -173,7 +210,7 @@ router.post('/info/update', (req, res) => {
             errors.push({text: 'You must be older than 18'})
         }
 
-        if(!req.body.firstName || !req.body.lastName || !req.body.birthday 
+        if(!req.body.firstName || !req.body.lastName || !req.body.birthday || !req.body.gender
             || !req.body.orientation || !req.body.ethnicity || !req.body.height 
             || !req.body.bodyType || !req.body.diet){
             errors.push({text: 'Please Fill All Fields'})
@@ -191,6 +228,7 @@ router.post('/info/update', (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 birthday: req.body.birthday,
+                gender: req.body.gender,
                 orientation: req.body.orientation,
                 ethnicity: req.body.ethnicity,
                 height: req.body.height,
@@ -204,6 +242,7 @@ router.post('/info/update', (req, res) => {
                 user.firstName = req.body.firstName;
                 user.lastName = req.body.lastName;
                 user.details = {
+                    gender: req.body.gender,
                     birthday: req.body.birthday,
                     orientation: req.body.orientation,
                     ethnicity: req.body.ethnicity,

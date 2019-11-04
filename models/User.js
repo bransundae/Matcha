@@ -28,12 +28,13 @@ const UserSchema = new Schema({
         location: {
             type: String
         },
+        gender: {
+            type: String
+        },
         birthday: {
             type: Date
         },
-        orientation: {
-            type: String
-        },
+        orientation: [],
         ethnicity: {
             type: String
         },
