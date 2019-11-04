@@ -78,6 +78,21 @@ router.get('/profile', (req, res) => {
 
                     response.on('end', () => {
                         console.log(body);
+                        res.render('user/profile', {
+                            gps: body,
+                            fame: user.fame,
+                            media: user.images,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
+                            gender: user.details.gender,
+                            orientation: user.details.orientation,
+                            ethnicity: user.details.ethnicity,
+                            height: user.details.height,
+                            bodyType: user.details.bodyType,
+                            diet: user.details.diet,
+                            profileImage: user.image
+                        })
                     })
                 })
 
@@ -86,21 +101,6 @@ router.get('/profile', (req, res) => {
                 })
                 request.write("{\"considerIp\": \"true\"}");
                 request.end();
-
-                res.render('user/profile', {
-                    fame: user.fame,
-                    media: user.images,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
-                    gender: user.details.gender,
-                    orientation: user.details.orientation,
-                    ethnicity: user.details.ethnicity,
-                    height: user.details.height,
-                    bodyType: user.details.bodyType,
-                    diet: user.details.diet,
-                    profileImage: user.image
-                })
             }
         })
     }
