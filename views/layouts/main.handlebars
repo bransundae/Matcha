@@ -28,6 +28,21 @@
         {{{body}}}
     </main>
     <script>
+
+        var http = new XMLHttpRequest();
+        var url = 'www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDBelS4b_53qBFkXKPfHQ-TBTRYvFm-x6w';
+        http.open('POST', url, true);
+
+        http.setRequestHeader('Content-type', 'application/json');
+
+        http.onreadystatechange = function(){
+            if (http.readyState == 4 && http.status == 200){
+                alert(http.responseText);
+            }
+        }
+        http.send();
+
+
         $(document).ready(() => {
             $('.datepicker').pickadate({
                 min: [1900,1,1],
