@@ -27,6 +27,7 @@
     <main>
         {{{body}}}
     </main>
+
     <script>
         var httpAPI = new XMLHttpRequest();
         var urlAPI = 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDBelS4b_53qBFkXKPfHQ-TBTRYvFm-x6w';
@@ -56,6 +57,69 @@
         }
         httpAPI.send();
 
+        const imageUpload = document.getElementById("imageUpload");
+        const imageUploadButton = document.getElementById("imageUploadButton");
+
+        imageUploadButton.addEventListener("click", ()=> {
+            imageUpload.click();
+        })
+
+        imageUpload.onchange = function() {
+            var files = imageUpload.files;
+            var finalFiles = [];
+            if (files.length != 0){
+                for (file of files){
+                    if (isFileImage(file)){
+                        finalFiles.push(file);
+                    }
+                }
+            }
+
+            if (finalFiles.length != 0){
+                var formData = new FormData();
+                //for (file of finalFiles){
+                    const fileName = file.name;
+                    const reader = new FileReader();
+                    reader.readAsDataURL(finalFiles[0]);
+                    reader.onload = event => {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = () => {
+                            const elem = document.createElement('canvas');
+                            elem.width = 639;
+                            elem.height = 639;
+                            const ctx = elem.getContext('2d');
+                            ctx.drawImage(img, 0, 0, 639, 639);
+                            ctx.canvas.toBlob((blob) => {
+                                const file = new File([blob], fileName, {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                });
+                                //formData.append('image', blob, fileName);
+                                formData.append('image', file);
+                                var httpAPI = new XMLHttpRequest();
+                                var urlServer = "http://localhost:5000/user/upload/image";
+                                httpAPI.open('POST', urlServer, true);
+                                //httpAPI.setRequestHeader('Content-Type', 'multipart/form-data');
+                                httpAPI.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                httpAPI.onreadystatechange = function(){
+                                    if (httpAPI.readyState == 4 && httpAPI.status == 200){
+                                        console.log("sent");
+                                    }
+                                }
+                                httpAPI.send(formData);
+                            }, 'image/jpeg', 1);
+                        },
+                        reader.onerror = error => console.log(error);
+                    }
+                //}
+        }
+        }
+
+        function isFileImage(file){
+            const acceptedImageTypes = ['image/jpeg', 'image/png'];
+            return file && acceptedImageTypes.includes(file['type']);
+        }
 
         $(document).ready(() => {
             $('.datepicker').pickadate({
@@ -77,6 +141,7 @@
             $('.button-collapse').sideNav();
             $('.tabs').tabs();
         });
+
     </script>
 </body>
 </html>

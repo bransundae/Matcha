@@ -44,7 +44,7 @@ router.get('/instagram/redirect', (req, res) => {
         path: '/oauth/access_token',
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencodedcation',
+            'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': data.length
         }
     }

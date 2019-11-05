@@ -25,7 +25,7 @@ const UserSchema = new Schema({
         type: String
     },
     details: {
-        location: {
+        country: {
             type: String
         },
         gender: {
@@ -62,6 +62,9 @@ const UserSchema = new Schema({
     },
     lastOnline: {
         type: Date
+    },
+    gps:{
+        type: String
     }
 });
 

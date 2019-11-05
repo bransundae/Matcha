@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const https = require('https');
 const router = express.Router();
+const fs = require('fs');
 
 const keys = require('../config/keys');
 
@@ -20,7 +21,7 @@ router.get('/profile', (req, res) => {
             email: res.locals.user.email
         })
         .then(user => {
-            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.gender 
+            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.country || !user.details.gender 
                 || !user.details.orientation || !user.details.ethnicity || !user.details.height 
                 || !user.details.bodyType || !user.details.diet){
                     req.flash('prompt', 'We\'re missing a few details about you');
@@ -58,49 +59,21 @@ router.get('/profile', (req, res) => {
                     user.save();
                 }
 
-                const data = `?key=${keys.googlePlacesAPIKEY}`;
-
-                const options = {
-                    hostname: 'www.googleapis.com',
-                    path: `/geolocation/v1/geolocate${data}`,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }
-
-                const request = https.request(options, (response) => {
-                    var body = "";
-
-                    response.on('data', (chunk) => {
-                        body += chunk;
-                    })
-
-                    response.on('end', () => {
-                        console.log(body);
-                        res.render('user/profile', {
-                            gps: body,
-                            fame: user.fame,
-                            media: user.images,
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
-                            gender: user.details.gender,
-                            orientation: user.details.orientation,
-                            ethnicity: user.details.ethnicity,
-                            height: user.details.height,
-                            bodyType: user.details.bodyType,
-                            diet: user.details.diet,
-                            profileImage: user.image
-                        })
-                    })
+                res.render('user/profile', {
+                    fame: user.fame,
+                    media: user.images,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    country: user.details.country,
+                    birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
+                    gender: user.details.gender,
+                    orientation: user.details.orientation,
+                    ethnicity: user.details.ethnicity,
+                    height: user.details.height,
+                    bodyType: user.details.bodyType,
+                    diet: user.details.diet,
+                    profileImage: user.image
                 })
-
-                request.on('error', (e) => {
-                    console.error(e)
-                })
-                request.write("{\"considerIp\": \"true\"}");
-                request.end();
             }
         })
     }
@@ -183,6 +156,7 @@ router.get('/info/update', (req, res) => {
             res.render('user/forms/info', {
                 firstName: user.firstName,
                 lastName: user.lastName,
+                country: user.details.country,
                 birthday: birthdayString,
                 gender: user.details.gender,
                 orientation: user.details.orientation,
@@ -210,8 +184,8 @@ router.post('/info/update', (req, res) => {
             errors.push({text: 'You must be older than 18'})
         }
 
-        if(!req.body.firstName || !req.body.lastName || !req.body.birthday || !req.body.gender
-            || !req.body.orientation || !req.body.ethnicity || !req.body.height 
+        if(!req.body.firstName || !req.body.lastName || !req.body.country || !req.body.birthday
+            || !req.body.gender || !req.body.orientation || !req.body.ethnicity || !req.body.height 
             || !req.body.bodyType || !req.body.diet){
             errors.push({text: 'Please Fill All Fields'})
         }
@@ -227,6 +201,7 @@ router.post('/info/update', (req, res) => {
                 errors: errors,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
+                country: req.body.country,
                 birthday: req.body.birthday,
                 gender: req.body.gender,
                 orientation: req.body.orientation,
@@ -242,6 +217,7 @@ router.post('/info/update', (req, res) => {
                 user.firstName = req.body.firstName;
                 user.lastName = req.body.lastName;
                 user.details = {
+                    country: req.body.country,
                     gender: req.body.gender,
                     birthday: req.body.birthday,
                     orientation: req.body.orientation,
@@ -260,5 +236,9 @@ router.post('/info/update', (req, res) => {
         }
     }
 });
+
+router.post('/upload/image', (req, res) => {
+    console.log(req.files);
+})
 
 module.exports = router;

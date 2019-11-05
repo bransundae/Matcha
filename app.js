@@ -7,10 +7,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
+const upload = require('express-fileupload');
 
 const https = require('https');
 const fs = require('fs');
-
 
 //Application
 const app = express();
@@ -37,8 +37,9 @@ app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({limit: '50mb', extended: true}));
+app.use(upload());
 app.use(cookieParser());
 app.use(session({
     secret: 'secret',
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
 }); 
 
 //Load Routes
+const matcha = require('./routes/matcha');
 const auth = require('./routes/auth');
 const user = require('./routes/user');
 const index = require('./routes/index');
@@ -78,6 +80,7 @@ mongoose.connect(keys.mongoURI, {
 app.use(express.static(__dirname + '/res'));
 
 //Use Routes
+app.use('/matcha', matcha);
 app.use('/auth', auth);
 app.use('/user', user);
 app.use('/', index);

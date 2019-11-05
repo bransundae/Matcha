@@ -1,27 +1,30 @@
 <div class="row">
     <div class="card-panel col s3">
-        <div class="collection">
-            <a href="#!" class="input-field collection-item grey-text text-lighten-2 grey darken-3">
-                <form action="" class="flow-text">
-                    <input type="text" id="search">
-                    <label for=""><i class="fas fa-search right"></i></label>
-                </form>
-            </a>
-            <a href="#!" class="collection-item grey-text text-lighten-2 grey darken-3"><i class="fas fa-comments"></i> Chat</a>
-            <a href="#!" class="collection-item grey-text text-lighten-2 grey darken-3"><i class="fas fa-heart"></i> Matcha</a>
-            <a href="#!" class="collection-item grey-text text-lighten-2 grey darken-3"><i class="fas fa-bell"></i> Notifications</a>
-            <a href="#!" class="collection-item grey-text text-lighten-2 grey darken-3"><i class="fas fa-cog"></i> Settings</a>
-        </div>
+        {{>_navpanel}}
     </div>
 
     <div class="col s9">
         <div class="row">
             <div class="col s2">
-                <img src={{{profileImage}}} alt="" class="circle responsive-img">
+                {{#if profileImage}}
+                    <img src={{{profileImage}}} alt="" class="circle responsive-img">
+                {{else}}
+                    <img src="/images/user.png" alt="" class="circle responsive-img">
+                {{/if}}
             </div>
             <div class="col s6">
                 <h5>{{firstName}} {{lastName}}</h5>
-                <p>{{years birthday}} | <i class="fas fa-mars"></i> | Western Cape, South Africa</p>
+                <p>{{years birthday}} |
+                    {{#unless (strcmp gender "male")}}
+                        <i class="fas fa-mars"></i>
+                    {{/unless}}
+                    {{#unless (strcmp gender "female")}}
+                        <i class="fas fa-venus"></i>
+                    {{/unless}}
+                    {{#unless (strcmp gender "non-binary")}}
+                        <i class="fas fa-genderless"></i>
+                    {{/unless}} 
+                    | {{country}}</p>
                 <a class="btn pink darken-1" href="/user/info/update">Update Info</a>
             </div>
 
@@ -71,7 +74,6 @@
                             <p>Height</p>
                             <p>Body Type</p>
                             <p>Diet</p>
-                            <p>Location</p>
                         </div>
 
                         <div class="col s9">
@@ -86,7 +88,6 @@
                             <p>{{height}}m</p>
                             <p>{{bodyType}}</p>
                             <p>{{diet}}</p>
-                            <p>{{gps}}</p>
                         </div>
 
                     </div>
@@ -127,7 +128,8 @@
                 {{/if}}
             
             <div class="row">
-                <a style="width:20vw" class="btn blue darken-1" href="#!"><i class="fas fa-cloud-upload-alt left"></i> Upload Photos</a>
+                <input type="file" name="imageUpload" id="imageUpload" hidden="hidden"/>
+                <a id="imageUploadButton" style="width:20vw" class="btn blue darken-1" href="#!"><i class="fas fa-cloud-upload-alt left"></i> Upload Photos</a>
                 <a style="width:20vw" class="btn pink darken-1" href="/auth/instagram"><i class="fab fa-instagram left"></i> Instagram Photos</a>
             </div>
         </div>
