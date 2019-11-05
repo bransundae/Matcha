@@ -26,8 +26,11 @@ router.get('/google', passport.authenticate('google', {
 router.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/auth'}), (req, res) => {
         res.redirect('/user/profile');
-    });
+});
 
+router.post('/google/gps', (req, res) => {
+    console.log(`GPS : ${req.body.gps}`);
+})
 
 router.get('/instagram', (req, res) => {
     res.redirect(keys.instagramWindow);

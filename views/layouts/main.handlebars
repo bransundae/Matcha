@@ -28,19 +28,33 @@
         {{{body}}}
     </main>
     <script>
+        var httpAPI = new XMLHttpRequest();
+        var urlAPI = 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDBelS4b_53qBFkXKPfHQ-TBTRYvFm-x6w';
+        httpAPI.open('POST', urlAPI, true);
 
-        var http = new XMLHttpRequest();
-        var url = 'www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDBelS4b_53qBFkXKPfHQ-TBTRYvFm-x6w';
-        http.open('POST', url, true);
+        httpAPI.setRequestHeader('Content-Type', 'application/json');
 
-        http.setRequestHeader('Content-type', 'application/json');
+        httpAPI.onreadystatechange = function(){
+            if (httpAPI.readyState == 4 && httpAPI.status == 200){
+                var httpServer = new XMLHttpRequest();
+                var urlServer = `http://localhost:5000/auth/google/gps`;
+                var paramServer = JSON.stringify({
+                    gps : httpAPI.responseText
+                })
+                console.log(httpAPI.responseText);
+                httpServer.open('POST', urlServer, true);
+                httpServer.setRequestHeader('Content-Type', 'application/json');
 
-        http.onreadystatechange = function(){
-            if (http.readyState == 4 && http.status == 200){
-                alert(http.responseText);
+                httpServer.onreadystatechange = function(){
+                    if (httpServer.readyState == 4 && httpServer.status == 200){
+                        console.log("Successfuly sent gps");
+                    }
+                }
+
+                httpServer.send(paramServer);
             }
         }
-        http.send();
+        httpAPI.send();
 
 
         $(document).ready(() => {
