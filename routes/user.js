@@ -216,8 +216,10 @@ router.post('/update/profileImage', (req, res) => {
         })
         .then(user => {
             user.image = req.body.profileImage
-            user.save();
-            renderProfile(req, res);
+            user.save()
+            .then(user => {
+                renderProfile(req, res);
+            });
         })
     }
 })
