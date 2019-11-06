@@ -6,11 +6,16 @@
     <div class="col s9">
         <div class="row">
             <div class="col s2">
-                {{#if profileImage}}
-                    <img src={{{profileImage}}} alt="" class="circle responsive-img">
-                {{else}}
-                    <img src="/images/user.png" alt="" class="circle responsive-img">
-                {{/if}}
+                <div class="card">
+                    <div class="card-image">
+                        <a class="btn-floating halfway-fab waves-effect waves-light pink"><i class="fas fa-plus"></i></a>
+                        {{#if profileImage}}
+                            <img src={{{profileImage}}} alt="" class="circle responsive-img">
+                        {{else}}
+                            <img src="/images/user.png" alt="" class="circle responsive-img">
+                        {{/if}}
+                    </div>
+                </div>
             </div>
             <div class="col s6">
                 <h5>{{firstName}} {{lastName}}</h5>
@@ -104,7 +109,7 @@
                         <div class="col s4">
                             <div class="card">
                                 <div class="card-image">
-                                    <img src="{{permalink}}media/?size=l">
+                                    <img src="{{permalink}}">
                                 </div>
                                 <div class="card-content">
                                     <p>{{caption}}</p>
@@ -128,7 +133,7 @@
                 {{/if}}
             
             <div class="row">
-                <input type="file" name="imageUpload" id="imageUpload" hidden="hidden"/>
+                <input type="file" name="upload" id="upload" hidden="hidden" multiple/>
                 <a id="imageUploadButton" style="width:20vw" class="btn blue darken-1" href="#!"><i class="fas fa-cloud-upload-alt left"></i> Upload Photos</a>
                 <a style="width:20vw" class="btn pink darken-1" href="/auth/instagram"><i class="fab fa-instagram left"></i> Instagram Photos</a>
             </div>

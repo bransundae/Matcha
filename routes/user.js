@@ -5,6 +5,7 @@ const passport = require('passport');
 const https = require('https');
 const router = express.Router();
 const fs = require('fs');
+const formidable = require('formidable');
 
 const keys = require('../config/keys');
 
@@ -12,71 +13,7 @@ require('../models/User');
 const User = mongoose.model('user')
 
 router.get('/profile', (req, res) => {
-    errors = [];
-    if(!res.locals.user){
-        req.flash('prompt', 'You must be logged in to access Matcha');
-        res.redirect('/auth/login');
-    } else {
-        User.findOne({
-            email: res.locals.user.email
-        })
-        .then(user => {
-            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.country || !user.details.gender 
-                || !user.details.orientation || !user.details.ethnicity || !user.details.height 
-                || !user.details.bodyType || !user.details.diet){
-                    req.flash('prompt', 'We\'re missing a few details about you');
-                    res.redirect('/user/info/update');
-                }
-            else{
-                var birthdayString = user.details.birthday.toDateString().split(' ');
-                var media = req.query.media;
-                if (typeof media !== undefined && media){
-                    media = JSON.parse(media);
-                    console.log(media);
-
-                    var dup = false;
-                    var currentImages = user.images;
-
-                    for (var i = 0; i < media.length; i++){
-                        for (var j = 0; j < currentImages.length; j++){
-                            if (currentImages[j].permalink ==  media[i].permalink || media[i].media_type != 'IMAGE'){
-                                dup = true;
-                                j = 0;
-                                i++;
-                            }
-                        }
-                        if (dup == false){
-                            var newMedia= {
-                                permalink: media[i].permalink,
-                                caption: media[i].caption
-                            }
-                            currentImages.push(newMedia);
-                        } else {0
-                            dup = false;
-                        }
-                    }
-                    user.images = currentImages;
-                    user.save();
-                }
-
-                res.render('user/profile', {
-                    fame: user.fame,
-                    media: user.images,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    country: user.details.country,
-                    birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
-                    gender: user.details.gender,
-                    orientation: user.details.orientation,
-                    ethnicity: user.details.ethnicity,
-                    height: user.details.height,
-                    bodyType: user.details.bodyType,
-                    diet: user.details.diet,
-                    profileImage: user.image
-                })
-            }
-        })
-    }
+    renderProfile(req, res);
 });
 
 router.post('/login', (req, res, next) => {
@@ -238,7 +175,103 @@ router.post('/info/update', (req, res) => {
 });
 
 router.post('/upload/image', (req, res) => {
-    console.log(req.files);
+    if (!res.locals.user){
+        req.flash('prompt', 'You must be logged in to access Matcha');
+        res.redirect('/auth/login');
+    } else {
+        User.findOne({email: res.locals.user.email})
+        .then(user => {
+            const form = new formidable.IncomingForm();
+            form.parse(req);
+
+            form.on('fileBegin', (name, file) => {
+                var dir = __dirname + `/../uploads/images/${res.locals.user.id}`
+
+                if (!fs.existsSync(dir)){
+                    fs.mkdirSync(dir);
+                }
+                file.name = Date.now();
+                file.path = `${dir}/${file.name}.jpg`;
+            })
+
+            form.on('file', (name, file) => {
+                console.log("Uploaded File: " + file.name);
+                user.images.push({permalink: `/images/${user.id}/${file.name}.jpg`, caption: ""});
+                user.save()
+                .then(user => {
+                    renderProfile(req, res);
+                })
+            })
+        })
+    }
 })
+
+function renderProfile(req, res){
+    errors = [];
+    if(!res.locals.user){
+        req.flash('prompt', 'You must be logged in to access Matcha');
+        res.redirect('/auth/login');
+    } else {
+        User.findOne({
+            email: res.locals.user.email
+        })
+        .then(user => {
+            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.country || !user.details.gender 
+                || !user.details.orientation || !user.details.ethnicity || !user.details.height 
+                || !user.details.bodyType || !user.details.diet){
+                    req.flash('prompt', 'We\'re missing a few details about you');
+                    res.redirect('/user/info/update');
+                }
+            else{
+                var birthdayString = user.details.birthday.toDateString().split(' ');
+                var media = req.query.media;
+                if (typeof media !== undefined && media){
+                    media = JSON.parse(media);
+                    console.log(media);
+
+                    var dup = false;
+                    var currentImages = user.images;
+
+                    for (var i = 0; i < media.length; i++){
+                        for (var j = 0; j < currentImages.length; j++){
+                            if (currentImages[j].permalink ==  `${media[i].permalink}media/?size=l` || media[i].media_type != 'IMAGE'){
+                                dup = true;
+                                j = 0;
+                                i++;
+                            }
+                        }
+                        if (dup == false){
+                            var newMedia= {
+                                permalink: `${media[i].permalink}media/?size=l`,
+                                caption: media[i].caption
+                            }
+                            currentImages.push(newMedia);
+                        } else {0
+                            dup = false;
+                        }
+                    }
+                    user.images = currentImages;
+                    user.save();
+                }
+
+                res.render('user/profile', {
+                    fame: user.fame,
+                    media: user.images,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    country: user.details.country,
+                    birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
+                    gender: user.details.gender,
+                    orientation: user.details.orientation,
+                    ethnicity: user.details.ethnicity,
+                    height: user.details.height,
+                    bodyType: user.details.bodyType,
+                    diet: user.details.diet,
+                    profileImage: user.image
+                })
+            }
+        })
+    }
+}
 
 module.exports = router;

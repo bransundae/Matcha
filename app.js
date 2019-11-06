@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
-const upload = require('express-fileupload');
 
 const https = require('https');
 const fs = require('fs');
@@ -39,7 +38,6 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb', extended: true}));
-app.use(upload());
 app.use(cookieParser());
 app.use(session({
     secret: 'secret',
@@ -78,6 +76,7 @@ mongoose.connect(keys.mongoURI, {
 
 //Load Resource Directory
 app.use(express.static(__dirname + '/res'));
+app.use(express.static(__dirname + '/uploads'));
 
 //Use Routes
 app.use('/matcha', matcha);
@@ -89,7 +88,7 @@ app.use('/', index);
 
 const port = process.env.PORT || 5000;
 
-/*const credentials = {
+const credentials = {
     key: fs.readFileSync('./config/key.pem', 'utf8'),
     cert: fs.readFileSync('./config/server.crt', 'utf8')
   };
@@ -98,10 +97,10 @@ const httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(port, () => {
     console.log(`Server started on port ${port}`);
-});*/
+});
 
-app.listen(port, ()=> {
+/*app.listen(port, ()=> {
     console.log(`Server started on port ${port}`);
-})
+})*/
 
-//module.exports = httpsServer;
+module.exports = httpsServer;
