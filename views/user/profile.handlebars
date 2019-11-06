@@ -2,13 +2,12 @@
     <div class="card-panel col s3">
         {{>_navpanel}}
     </div>
-
     <div class="col s9">
         <div class="row">
             <div class="col s2">
                 <div class="card">
                     <div class="card-image">
-                        <a class="btn-floating halfway-fab waves-effect waves-light pink"><i class="fas fa-plus"></i></a>
+                        <a id="profileImageSelectorBtn" class="btn-floating halfway-fab waves-effect waves-light pink"><i class="fas fa-plus"></i></a>
                         {{#if profileImage}}
                             <img src={{{profileImage}}} alt="" class="circle responsive-img">
                         {{else}}
@@ -146,3 +145,5 @@
     </div>
 
 </div>
+
+{{>_profile_image_selector}}

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="nav-wrapper">
         <a href="/dashboard" class="brand-logo center">Matcha</a>
-        <a href="#" data-activates="main-menu" class="button-collapse show-on-large"><i class="fa fa-bars"></i></a>
+        <a id="sideNavBtn" href="#" data-activates="main-menu" class="button-collapse show-on-large"><i class="fa fa-bars"></i></a>
             <ul class="right hide-on-small-only">
                 {{#if user}}
                     <li>
@@ -14,7 +14,7 @@
                     </li> 
                 {{/if}}
             </ul>
-            <ul class="side-nav" id="main-menu">
+            <ul class="sidenav" id="main-menu">
                 {{#unless user}}
                 <li>
                     <a class="btn red darken-1" href="/auth/google"><i class="fab fa-google left"></i> Google Login</a>
