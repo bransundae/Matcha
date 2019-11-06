@@ -206,6 +206,22 @@ router.post('/upload/image', (req, res) => {
     }
 })
 
+router.post('/update/profileImage', (req, res) => {
+    if(!res.locals.user){
+        req.flash('prompt', 'You must be logged in to access Matcha');
+        res.redirect('/auth/login');
+    } else {
+        User.findOne({
+            email: res.locals.user.email
+        })
+        .then(user => {
+            user.image = req.body.profileImage
+            user.save();
+            renderProfile(req, res);
+        })
+    }
+})
+
 function renderProfile(req, res){
     errors = [];
     if(!res.locals.user){

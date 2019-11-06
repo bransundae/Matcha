@@ -156,9 +156,32 @@
             if (piBtn !== undefined && piBtn){
                 piBtn.onclick = function () {
                     for (var i = 0; i < modalI.length; i++){
-                        modalI[i].open();
+                        if (modalI[i].id == "profileImageSelector"){
+                            modalI[i].open();
+                        }
                     }
                 }
+            }
+            //profileImageSelect
+            var piSelected = document.querySelectorAll('.profileImageSelected');
+            for (var i = 0; i < piSelected.length; i++){
+                var url = piSelected[i].firstElementChild.src
+                piSelected[i].onclick = (function(url) {return function() {
+                    for (var i = 0; i < modalI.length; i++){
+                        if (modalI[i].id == "profileImageConfirm"){
+                            document.getElementById("profileImageConfirmLink").src = url;
+                            document.getElementById("profileImage").value = url;
+                            modalI[i].open();
+                        }
+                    }
+                };})(url);
+            }
+            var piAccept = document.getElementById("profileImageSelectorAcceptBtn");
+            piAccept.onclick = function() {
+                document.getElementById("profileImageForm").submit();
+                for (var i = 0; i < modalI.length; i++){
+                        modalI[i].close();
+                    }
             }
         });
     </script>
