@@ -15,8 +15,14 @@ router.get('/', (req, res) => {
             'gps.locality' : res.locals.user.gps.locality
         })
         .then(users => {
+            var tempUsers = [];
+            for (user of users){
+                if (user.email != res.locals.user.email){
+                    tempUsers.push(user);
+                }
+            }
             res.render('matcha/matcha', {
-                users : users
+                users : tempUsers
             });  
         })
     }
