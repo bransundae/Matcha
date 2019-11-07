@@ -58,13 +58,21 @@ const UserSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
     lastOnline: {
         type: Date
     },
     gps:{
-        type: String
+        lat: {
+            type: String
+        },
+        lng: {
+            type: String
+        },
+        locality: {
+            type: String
+        }
     }
 });
 

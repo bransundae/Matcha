@@ -29,6 +29,7 @@
                         <i class="fas fa-genderless"></i>
                     {{/unless}} 
                     | {{country}}</p>
+                    <p><i style="color:green" class="fas fa-circle"></i> {{gps.locality}} | {{lastOnline}}</p>
                 <a class="btn pink darken-1" href="/user/info/update">Update Info</a>
             </div>
 
@@ -99,44 +100,49 @@
         </div>
         <div id="photos" class="col s12">
             <div class="section"></div>
-
-                {{#if media}}
-                    {{#each media}}
-                        {{#if (indexStep @index 3)}}
-                            <div class="row">
-                        {{/if}}
-                        <div class="col s4">
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="{{permalink}}">
-                                </div>
-                                <div class="card-content">
-                                    <p>{{caption}}</p>
-                                </div>
-                                <div class="card-action">
+                <div class="row">
+                    <div class="col s12">
+                        {{#if media}}
+                            {{#each media}}
+                                {{#if (indexStep @index 3)}}
                                     <div class="row">
-                                        <div class="col s6">
-                                            <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                                {{/if}}
+                                <div class="col s4">
+                                    <div class="card">
+                                        <div class="card-image">
+                                            <img src="{{permalink}}">
                                         </div>
-                                        <div class="col s6">
-                                            <a href="#"><i class="fas fa-trash-alt"></i> Delete</a>
+                                        <div class="card-content">
+                                            <p>{{caption}}</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="#"><i class="fas fa-trash-alt"></i> Delete</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        {{#if (indexStep @index 3)}}
-                            </div>
+                                {{#if (indexStep @index 3)}}
+                                    </div>
+                                {{/if}}
+                            {{/each}}
                         {{/if}}
-                    {{/each}}
-                {{/if}}
-            
-            <div class="row">
-                <input type="file" name="upload" id="upload" hidden="hidden" multiple/>
-                <a id="imageUploadButton" style="width:20vw" class="btn blue darken-1" href="#!"><i class="fas fa-cloud-upload-alt left"></i> Upload Photos</a>
-                <a style="width:20vw" class="btn pink darken-1" href="/auth/instagram"><i class="fab fa-instagram left"></i> Instagram Photos</a>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col s12">
+                    <input type="file" name="upload" id="upload" hidden="hidden" multiple/>
+                    <a id="imageUploadButton" style="width:20vw" class="btn blue darken-1" href="#!"><i class="fas fa-cloud-upload-alt left"></i> Upload Photos</a>
+                    <a style="width:20vw" class="btn pink darken-1" href="/auth/instagram"><i class="fab fa-instagram left"></i> Instagram Photos</a>
+                </div>
             </div>
-        </div>
+            </div>
+        
         <div id="questions" class="col s12">
 
         </div>

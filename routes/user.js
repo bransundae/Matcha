@@ -197,8 +197,12 @@ router.post('/upload/image', (req, res) => {
             form.on('file', (name, file) => {
                 console.log("Uploaded File: " + file.name);
                 user.images.push({permalink: `/images/${user.id}/${file.name}.jpg`, caption: ""});
+            })
+
+            form.on('end', () => {
                 user.save()
                 .then(user => {
+                    console.log("new render");
                     renderProfile(req, res);
                 })
             })
@@ -234,60 +238,69 @@ function renderProfile(req, res){
             email: res.locals.user.email
         })
         .then(user => {
-            if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.country || !user.details.gender 
-                || !user.details.orientation || !user.details.ethnicity || !user.details.height 
-                || !user.details.bodyType || !user.details.diet){
-                    req.flash('prompt', 'We\'re missing a few details about you');
-                    res.redirect('/user/info/update');
-                }
-            else{
-                var birthdayString = user.details.birthday.toDateString().split(' ');
-                var media = req.query.media;
-                if (typeof media !== undefined && media){
-                    media = JSON.parse(media);
-                    console.log(media);
-
-                    var dup = false;
-                    var currentImages = user.images;
-
-                    for (var i = 0; i < media.length; i++){
-                        for (var j = 0; j < currentImages.length; j++){
-                            if (currentImages[j].permalink ==  `${media[i].permalink}media/?size=l` || media[i].media_type != 'IMAGE'){
-                                dup = true;
-                                j = 0;
-                                i++;
-                            }
-                        }
-                        if (dup == false){
-                            var newMedia= {
-                                permalink: `${media[i].permalink}media/?size=l`,
-                                caption: media[i].caption
-                            }
-                            currentImages.push(newMedia);
-                        } else {0
-                            dup = false;
-                        }
+            user.lastOnline = Date.now();
+            user.save(user)
+            .then(user => {
+                if (!user.firstName || !user.lastName || !user.details.birthday || !user.details.country || !user.details.gender 
+                    || !user.details.orientation || !user.details.ethnicity || !user.details.height 
+                    || !user.details.bodyType || !user.details.diet){
+                        req.flash('prompt', 'We\'re missing a few details about you');
+                        res.redirect('/user/info/update');
                     }
-                    user.images = currentImages;
-                    user.save();
-                }
+                else{
+                    var lastOnlineString = user.lastOnline.toDateString().split(' ');
+                    var birthdayString = user.details.birthday.toDateString().split(' ');
+                    var media = req.query.media;
+                    if (typeof media !== undefined && media){
+                        media = JSON.parse(media);
+                        console.log(media);
 
-                res.render('user/profile', {
-                    fame: user.fame,
-                    media: user.images,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    country: user.details.country,
-                    birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
-                    gender: user.details.gender,
-                    orientation: user.details.orientation,
-                    ethnicity: user.details.ethnicity,
-                    height: user.details.height,
-                    bodyType: user.details.bodyType,
-                    diet: user.details.diet,
-                    profileImage: user.image
-                })
-            }
+                        var dup = false;
+                        var currentImages = user.images;
+
+                        for (var i = 0; i < media.length; i++){
+                            for (var j = 0; j < currentImages.length; j++){
+                                if (currentImages[j].permalink ==  `${media[i].permalink}media/?size=l` || media[i].media_type != 'IMAGE'){
+                                    dup = true;
+                                    j = 0;
+                                    i++;
+                                }
+                            }
+                            if (dup == false){
+                                var newMedia= {
+                                    permalink: `${media[i].permalink}media/?size=l`,
+                                    caption: media[i].caption
+                                }
+                                currentImages.push(newMedia);
+                            } else {0
+                                dup = false;
+                            }
+                        }
+                        user.images = currentImages;
+                        user.save();
+                    }
+
+                    console.log(user.gps);
+
+                    res.render('user/profile', {
+                        fame: user.fame,
+                        media: user.images,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        country: user.details.country,
+                        birthday: `${birthdayString[2]} ${birthdayString[1]},${birthdayString[3]}`,
+                        lastOnline: `${lastOnlineString[2]} ${lastOnlineString[1]}`,
+                        gender: user.details.gender,
+                        orientation: user.details.orientation,
+                        ethnicity: user.details.ethnicity,
+                        height: user.details.height,
+                        bodyType: user.details.bodyType,
+                        diet: user.details.diet,
+                        profileImage: user.image,
+                        gps: user.gps
+                    })
+                }
+            })
         })
     }
 }

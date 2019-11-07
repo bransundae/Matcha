@@ -4,46 +4,42 @@
     </div>
 
     <div class="col s6">
-        <div class="card-panel">
-            <div class="row valign-wrapper">
-                <div class="col s3">
-                    <img src="/images/snoek.jpg" alt="" class="circle responsive-img">
-                </div>
-                <div class="col s6">
-                    <p>Frances Clare Litten</p>
-                    <p>22 | <i class="fas fa-venus"></i> |South Africa</p>
-                 </div>
-                <div class="col s3">
-                    <a class="btn pink darken-1" href="#!">View</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="row card-panel valign-wrapper flow-text">
-            <div class="col s3">
-                <img src="/images/wknd.jpg" alt="" class="circle responsive-img">
-            </div>
-            <div class="col s6">
-                <p>Frances Clare Litten</p>
-                <p>22 | <i class="fas fa-venus"></i> |South Africa</p>
-            </div>
-            <div class="col s3">
-                <a class="btn pink darken-1" href="#!">View</a>
-            </div>
-        </div>
+        {{#if users}}
+            {{#each users}}
 
-        <div class="row card-panel valign-wrapper flow-text">
-            <div class="col s2">
-                <img src="https://www.instagram.com/p/Byu5CKEg166/media/?size=l" alt="" class="circle responsive-img">
-            </div>
-            <div class="col s7">
-                <p>Frances Clare Litten</p>
-                <p>22 | <i class="fas fa-venus"></i> |South Africa</p>
-            </div>
-            <div class="col s3">
-                <a class="btn pink darken-1" href="#!">View</a>
-            </div>
-        </div>
+                <div class="card-panel">
+                    <div class="row valign-wrapper">
+                        <div class="col s3">
+                            <img src={{this.image}} alt="" class="circle responsive-img">
+                        </div>
+                        <div class="col s6">
+                            <p>{{this.firstName}} {{this.lastName}}</p>
+                            <p>{{years this.details.birthday}} |
+                                {{#unless (strcmp this.details.gender "male")}}
+                                    <i class="fas fa-mars"></i>
+                                {{/unless}}
+                                {{#unless (strcmp this.details.gender "female")}}
+                                    <i class="fas fa-venus"></i>
+                                {{/unless}}
+                                {{#unless (strcmp this.details.gender "non-binary")}}
+                                    <i class="fas fa-genderless"></i>
+                                {{/unless}} 
+                                | {{this.details.country}}</p>
+                                {{#if this.gps}}
+                                    {{#if this.lastOnline}}
+                                        <p><i style="color:green" class="fas fa-circle"></i> {{this.gps.locality}} | {{dateStringify this.lastOnline}}</p>
+                                    {{/if}}
+                                {{/if}}
+                        </div>
+                        <div class="col s3">
+                            <a class="btn pink darken-1" href="#!">View</a>
+                        </div>
+                    </div>
+                </div>
+
+            {{/each}}
+        {{/if}}
     </div>
 
 

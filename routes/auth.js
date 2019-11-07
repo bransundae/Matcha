@@ -29,7 +29,73 @@ router.get('/google/callback', passport.authenticate('google', {
 });
 
 router.post('/google/gps', (req, res) => {
-    console.log(`GPS : ${req.body.gps}`);
+    const gps = JSON.parse(req.body.gps);
+    const options = {
+        hostname: `maps.googleapis.com`,
+        path: `/maps/api/geocode/json?latlng=${gps.location.lat},${gps.location.lng}&key=${keys.googlePlacesAPIKEY}`,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    }
+
+    const request = https.request(options, (response) => {
+        var body = "";
+        console.log('Reverse Geotagging Client Location');
+
+        response.on('data', (chunk) => {
+            body += chunk;
+        })
+
+        response.on('end', () => {
+            const result = JSON.parse(body);
+            var neighbourhood = "";
+            for (var i = 0; i < result.results[0].address_components.length; i++){
+                for (var j = 0; j < result.results[0].address_components[i].types.length; j++){
+                    if (result.results[0].address_components[i].types[j] == "sublocality"){
+                        neighbourhood = result.results[0].address_components[i].short_name;
+                        break ;
+                    }
+                }
+                if (neighbourhood){
+                    break ;
+                }
+            }
+
+            if (!neighbourhood){
+                for (var i = 0; i < result.results[0].address_components.length; i++){
+                    for (var j = 0; j < result.results[0].address_components[i].types.length; j++){
+                        if (result.results[0].address_components[i].types[j] == "locality"){
+                            neighbourhood = result.results[0].address_components[i].short_name;
+                            break ;
+                        }
+                    }
+                    if (neighbourhood){
+                        break ;
+                    }
+                }
+            }
+
+            if (neighbourhood){
+                User.findOne({
+                    email: res.locals.user.email
+                })
+                .then(user => {
+                    user.gps = {
+                        lat: gps.location.lat,
+                        lng: gps.location.lng,
+                        locality: neighbourhood 
+                    }
+                    user.save()
+                    .then(user => {
+                        res.redirect('/user/profile');
+                    })
+                })
+            }
+
+        })
+    })
+    request.end();
 })
 
 router.get('/instagram', (req, res) => {

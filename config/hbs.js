@@ -15,5 +15,10 @@ module.exports = {
 
     years : function(time){
         return (Math.floor((Date.now() - Date.parse(time)) / 31540000000));
-    } 
+    },
+
+    dateStringify : function(date){
+        var dateString = date.toDateString().split(' ');
+        return `${dateString[2]}, ${dateString[1]}`;
+    }
 }

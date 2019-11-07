@@ -21,7 +21,8 @@ require('./models/User');
 const {
     strcmp,
     indexStep,
-    years
+    years,
+    dateStringify
 } = require('./config/hbs');
 const keys = require('./config/keys');
 require('./config/passport')(passport);
@@ -31,7 +32,8 @@ app.engine('handlebars', exphbs({
     helpers: {
         strcmp : strcmp,
         indexStep: indexStep,
-        years: years
+        years: years,
+        dateStringify: dateStringify
     },
     defaultLayout: 'main'
 }));
