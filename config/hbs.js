@@ -20,5 +20,5 @@ module.exports = {
     dateStringify : function(date){
         var dateString = date.toDateString().split(' ');
         return `${dateString[2]}, ${dateString[1]}`;
-    }
+    },
 }

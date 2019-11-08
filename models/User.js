@@ -46,6 +46,10 @@ const UserSchema = new Schema({
         },
         diet: {
             type: String
+        },
+        about : {
+            type: String,
+            default: "Hey there I'm new to Matcha!"
         }
     },
     images: [{permalink : {type : String}, caption : {type : String}}],

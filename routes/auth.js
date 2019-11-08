@@ -41,12 +41,12 @@ router.post('/google/gps', (req, res) => {
 
     const request = https.request(options, (response) => {
         var body = "";
-        console.log('Reverse Geotagging Client Location');
 
         response.on('data', (chunk) => {
             body += chunk;
         })
 
+        
         response.on('end', () => {
             const result = JSON.parse(body);
             var neighbourhood = "";

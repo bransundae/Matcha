@@ -22,7 +22,7 @@ const {
     strcmp,
     indexStep,
     years,
-    dateStringify
+    dateStringify,
 } = require('./config/hbs');
 const keys = require('./config/keys');
 require('./config/passport')(passport);
@@ -33,7 +33,7 @@ app.engine('handlebars', exphbs({
         strcmp : strcmp,
         indexStep: indexStep,
         years: years,
-        dateStringify: dateStringify
+        dateStringify: dateStringify,
     },
     defaultLayout: 'main'
 }));
@@ -52,6 +52,7 @@ app.use(passport.session());
 
 //Globals
 app.use((req, res, next) => {
+    res.locals.aboutEdit = req.aboutEdit || null; 
     res.locals.user = req.user || null;
     res.locals.gps = req.gps || null;
     res.locals.success_msg = req.flash('success_msg');

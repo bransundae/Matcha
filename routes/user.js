@@ -87,7 +87,6 @@ router.get('/info/update', (req, res) => {
         .then(user => {
             if (user.details.birthday){
                 var str = user.details.birthday.toDateString().split(' ');
-                console.log(str);
                 var birthdayString = `${str[2]} ${str[1]},${str[3]}`;
             }
             res.render('user/forms/info', {
@@ -105,6 +104,22 @@ router.get('/info/update', (req, res) => {
         })
     }
 });
+
+router.post('/about/update', (req, res) => {
+    if(!res.locals.user){
+        res.redirect('/auth/login');
+    } else {
+        User.findOne({
+            email: res.locals.user.email
+        }).then(user => {
+            user.details.about = req.body.about;
+            user.save()
+            .then(user => {
+                res.send('/user/profile?aboutEdit=false');
+            })
+        })
+    }
+})
 
 router.post('/info/update', (req, res) => {
 
@@ -163,7 +178,6 @@ router.post('/info/update', (req, res) => {
                     bodyType: req.body.bodyType,
                     diet: req.body.diet
                 };
-                console.log(user);
                 user.save()
                 .then(user => {
                     req.flash('success_msg', 'Your info has been updated');
@@ -202,8 +216,7 @@ router.post('/upload/image', (req, res) => {
             form.on('end', () => {
                 user.save()
                 .then(user => {
-                    console.log("new render");
-                    renderProfile(req, res);
+                    res.send('/user/profile');
                 })
             })
         })
@@ -229,6 +242,14 @@ router.post('/update/profileImage', (req, res) => {
 })
 
 function renderProfile(req, res){
+
+    var aboutEdit = false;
+    //about parameter
+    
+    if (req.query !== undefined && req.query){
+        aboutEdit = req.query.aboutEdit;
+    }
+
     errors = [];
     if(!res.locals.user){
         req.flash('prompt', 'You must be logged in to access Matcha');
@@ -279,10 +300,10 @@ function renderProfile(req, res){
                         user.images = currentImages;
                         user.save();
                     }
-
-                    console.log(user.gps);
-
+                    console.log(aboutEdit);
                     res.render('user/profile', {
+                        aboutEdit: aboutEdit,
+                        about: user.details.about,
                         fame: user.fame,
                         media: user.images,
                         firstName: user.firstName,
